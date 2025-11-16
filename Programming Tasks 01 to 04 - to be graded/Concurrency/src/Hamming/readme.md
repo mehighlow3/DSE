@@ -1,0 +1,3 @@
+The output contains valid Hamming numbers but includes duplicates and is not strictly sorted.
+
+This happens because the merge stage (in_merge) forwards values before all three input queues (×2, ×3, ×5) have produced their next distinct elements, causing the merge thread to interleave already-seen numbers or emit them slightly out of order. Race conditions between worker threads and the blocking queues can also cause values to be enqueued multiple times before propagation stabilizes. These effects do not break correctness of Hamming number, but they disrupt ordering and uniqueness as a direct consequence of the deterministic generation process.
